@@ -97,6 +97,19 @@ h6 {
   z-index: 1;
 }
 
+#header::after {
+  content: "";
+  position: absolute;
+  inset: -20% -10%;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(22, 196, 127, 0.22), transparent 36%),
+    radial-gradient(circle at 82% 30%, rgba(242, 163, 58, 0.2), transparent 34%),
+    radial-gradient(circle at 50% 78%, rgba(92, 132, 255, 0.2), transparent 42%);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
 #header .container {
   position: relative;
   width: 100%;
@@ -488,6 +501,10 @@ h6 {
 }
 
 #header.header-top::before {
+  display: none;
+}
+
+#header.header-top::after {
   display: none;
 }
 
@@ -979,6 +996,55 @@ section .container {
   }
 }
 
+@keyframes mobileHeroDrift {
+  0% {
+    transform: scale(1) translateX(0) translateY(0);
+  }
+  50% {
+    transform: scale(1.08) translateX(-2%) translateY(-1%);
+  }
+  100% {
+    transform: scale(1.04) translateX(1.5%) translateY(1.5%);
+  }
+}
+
+@keyframes mobileAuraSweep {
+  0% {
+    transform: rotate(0deg) scale(0.94);
+    opacity: 0.25;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.02);
+    opacity: 0.46;
+  }
+  100% {
+    transform: rotate(360deg) scale(0.94);
+    opacity: 0.25;
+  }
+}
+
+@keyframes mobileKickerPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 196, 127, 0.32);
+    transform: translateY(0);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(22, 196, 127, 0);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes mobileTitleGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+}
+
 @keyframes spinOrbitCw {
   from {
     transform: translate(-50%, -50%) rotate(0deg);
@@ -1059,9 +1125,28 @@ section .container {
 }
 
 @media (max-width: 768px) {
+  #header {
+    isolation: isolate;
+  }
+
   #header::before {
     width: 100%;
-    opacity: 0.16;
+    opacity: 0.23;
+    filter: saturate(1.06) contrast(1.04);
+    animation: mobileHeroDrift 16s ease-in-out infinite alternate;
+  }
+
+  #header::after {
+    opacity: 0.42;
+    animation: mobileAuraSweep 14s linear infinite;
+  }
+
+  .hero-kicker {
+    animation: mobileKickerPulse 2.6s ease-in-out infinite;
+  }
+
+  #header h1 {
+    animation: mobileTitleGlow 4.6s ease-in-out infinite;
   }
 
   section .container {
@@ -1098,5 +1183,20 @@ section .container {
 
   .timeline-card::before {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #header::before,
+  #header::after,
+  .hero-kicker,
+  #header h1,
+  .hero-visual,
+  .hero-visual::before,
+  .hero-visual::after,
+  .hero-image-card,
+  .hero-image-card::after,
+  .hero-orbit {
+    animation: none !important;
   }
 }
